@@ -1,0 +1,39 @@
+// Configuration of server image and settings in Codespaces
+// File format: https://aka.ms/devcontainer.json. 
+{
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/universal:2",
+	
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// workaround for https://github.com/microsoft/vscode-livepreview/issues/111 : click on both ports before opening preview
+	"forwardPorts": [
+		3000,
+		3001
+	],
+	"portsAttributes": {
+		"3000": {
+			"label": "Live Preview webserver",
+			"onAutoForward": "silent" 
+		},
+		"3001": {
+			"label": "Live Preview websocket",
+			"onAutoForward": "silent" 
+		}
+	},
+	
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			"extensions": [
+				"mathematic.vscode-pdf", // add viewer for pdf-files (this one supports vscode-web)
+				"ms-vsliveshare.vsliveshare", // add google-docs like typing in same file, click on live-share button in left icon pane
+				"mhutchie.git-graph", // add graphical viewer for branches and commits, click on button in Source-Code tab
+				"ms-vscode.live-server" // add auto-update webserver to preview html files, right click on file an select Show Preview
+			],
+			"settings": {
+				"livePreview.previewDebounceDelay": 500 // auto-reload the default value of 50ms causes the preview to reload while new changes are begin made and remain unnoticed.
+			}
+		}
+	}
+}
