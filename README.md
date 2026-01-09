@@ -1,5 +1,5 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/nqJ-gqFL)
-# Template voor Praktische Opdracht Webdesign
+# Template voor Praktische Opdracht Webdesign Finne
 
 This repository is a template for Dutch students of ISW Hoogeland grades havo-4 and vwo-4 (highschool grade 10 in the US-system).
 It contains startcode for an assigment to build a website. The recommended IDE for this template is Codespaces.
