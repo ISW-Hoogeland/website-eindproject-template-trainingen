@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Oefeningen</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="trainingen.html">Trainingen</a></li>
+      <li><a href="exercises.html" class="active">Oefeningen</a></li>
+      <li><a href="mijn-oefeningen.html">Mijn Oefeningen</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>Oefeningen</h1>
+      <p>Ontdek en werk aan verschillende oefeningen. Maak je favorieten, voeg commentaar toe en sla ze op.</p>
+    </header>
+
+    <div class="exercises-section">
+      <div id="exercises-list" class="exercises-grid">
+        <!-- Exercises will be loaded here by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for adding comments -->
+  <div id="comment-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Commentaar Toevoegen</h2>
+      <textarea id="comment-input" placeholder="Schrijf je commentaar hier..." maxlength="500"></textarea>
+      <button id="submit-comment">Commentaar Plaatsen</button>
+      <div id="comments-list" class="comments-list">
+        <!-- Comments will be displayed here -->
+      </div>
+    </div>
+  </div>
+
+  <script src="exercises.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Mijn Oefeningen</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="trainingen.html">Trainingen</a></li>
+      <li><a href="exercises.html">Oefeningen</a></li>
+      <li><a href="mijn-oefeningen.html" class="active">Mijn Oefeningen</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>Mijn Oefeningen</h1>
+      <p>Bekijk je favorieten en opgeslagen oefeningen</p>
+    </header>
+
+    <div class="tabs-section">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="favorites">
+          ★ Favorieten (<span id="favorite-count">0</span>)
+        </button>
+        <button class="tab-btn" data-tab="saved">
+          💾 Opgeslagen (<span id="saved-count">0</span>)
+        </button>
+      </div>
+
+      <div id="favorites" class="tab-content active">
+        <div id="favorites-list" class="exercises-grid">
+          <!-- Favorites will be loaded here -->
+        </div>
+        <div id="favorites-empty" class="empty-state">
+          <p>Je hebt nog geen favorieten oefeningen.</p>
+          <a href="exercises.html" class="empty-state-link">Ga naar oefeningen →</a>
+        </div>
+      </div>
+
+      <div id="saved" class="tab-content">
+        <div id="saved-list" class="exercises-grid">
+          <!-- Saved exercises will be loaded here -->
+        </div>
+        <div id="saved-empty" class="empty-state">
+          <p>Je hebt nog geen oefeningen opgeslagen.</p>
+          <a href="exercises.html" class="empty-state-link">Ga naar oefeningen →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for viewing comments -->
+  <div id="comment-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Commentaren</h2>
+      <div id="comments-list" class="comments-list">
+        <!-- Comments will be displayed here -->
+      </div>
+    </div>
+  </div>
+
+  <script src="mijn-oefeningen.js"></script>
+</body>
+
+</html>
