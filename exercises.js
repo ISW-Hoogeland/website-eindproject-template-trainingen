@@ -56,19 +56,31 @@ const exercisesData = [
   }
 ];
 
+// Load custom exercises from localStorage
+function loadCustomExercises() {
+  return JSON.parse(localStorage.getItem('customExercises') || '[]');
+}
+
+// Get all exercises (base + custom)
+function getAllExercises() {
+  return [...exercisesData, ...loadCustomExercises()];
+}
+
 // Initialize local storage for user data
 function initializeStorage() {
-  if (!localStorage.getItem('exercises')) {
-    const storageData = {};
-    exercisesData.forEach(exercise => {
+  const storageData = JSON.parse(localStorage.getItem('exercises') || '{}');
+
+  getAllExercises().forEach(exercise => {
+    if (!storageData[exercise.id]) {
       storageData[exercise.id] = {
         favorite: false,
         saved: false,
         comments: exercise.comments ? [...exercise.comments] : []
       };
-    });
-    localStorage.setItem('exercises', JSON.stringify(storageData));
-  }
+    }
+  });
+
+  localStorage.setItem('exercises', JSON.stringify(storageData));
 }
 
 // Get user data from storage
@@ -89,7 +101,8 @@ function renderExercises() {
   const container = document.getElementById('exercises-list');
   container.innerHTML = '';
 
-  exercisesData.forEach(exercise => {
+  const allExercises = getAllExercises();
+  allExercises.forEach(exercise => {
     const userData = getUserData(exercise.id);
     const card = createExerciseCard(exercise, userData);
     container.appendChild(card);
@@ -116,6 +129,7 @@ function createExerciseCard(exercise, userData) {
     </div>
     <div class="exercise-author">${exercise.author}</div>
     <div class="exercise-description">${exercise.description}</div>
+    ${exercise.visual ? '<div class="visual-preview" data-ex-id="'+exercise.id+'"></div>' : ''}
     <div class="exercise-footer">
       <div class="comment-section">
         <button class="comment-btn" data-exercise-id="${exercise.id}">💬 Commentaar</button>
@@ -133,6 +147,24 @@ function createExerciseCard(exercise, userData) {
   saveBtn.addEventListener('click', () => toggleSave(exercise.id, saveBtn));
   commentBtn.addEventListener('click', () => openCommentModal(exercise));
 
+  // If visual exists: render preview
+  if (exercise.visual && exercise.visual.palette && exercise.visual.placed) {
+    const preview = card.querySelector('.visual-preview');
+    if (preview) {
+      preview.innerHTML = '';
+      exercise.visual.placed.forEach(p => {
+        const imgSrc = exercise.visual.palette && exercise.visual.palette[p.imageIndex];
+        if (!imgSrc) return;
+        const el = document.createElement('img');
+        el.src = imgSrc;
+        el.style.left = `${p.x}%`;
+        el.style.top = `${p.y}%`;
+        el.style.width = `${p.w}%`;
+        preview.appendChild(el);
+      });
+    }
+  }
+
   return card;
 }
 
@@ -142,6 +174,13 @@ function toggleFavorite(exerciseId, btn) {
   userData.favorite = !userData.favorite;
   updateUserData(exerciseId, userData);
   btn.classList.toggle('active');
+
+  // Try to push to server (best-effort)
+  fetch(`/api/userdata/${exerciseId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ favorite: userData.favorite })
+  }).catch(err => console.log('Server update failed (favorite):', err.message));
 }
 
 // Toggle save
@@ -150,6 +189,13 @@ function toggleSave(exerciseId, btn) {
   userData.saved = !userData.saved;
   updateUserData(exerciseId, userData);
   btn.classList.toggle('active');
+
+  // Try to push to server (best-effort)
+  fetch(`/api/userdata/${exerciseId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ saved: userData.saved })
+  }).catch(err => console.log('Server update failed (save):', err.message));
 }
 
 // Open comment modal
@@ -191,7 +237,7 @@ function renderComments(comments, exerciseId) {
 }
 
 // Add comment
-function addComment() {
+async function addComment() {
   const modal = document.getElementById('comment-modal');
   const exerciseId = parseInt(modal.dataset.exerciseId);
   const commentText = document.getElementById('comment-input').value.trim();
@@ -212,11 +258,10 @@ function addComment() {
     date: new Date().toISOString().split('T')[0]
   };
 
-  // Update data
+  // Optimistically update localStorage
   const data = JSON.parse(localStorage.getItem('exercises'));
-  if (!data[exerciseId].comments) {
-    data[exerciseId].comments = [];
-  }
+  if (!data[exerciseId]) data[exerciseId] = { favorite: false, saved: false, comments: [] };
+  if (!data[exerciseId].comments) data[exerciseId].comments = [];
   data[exerciseId].comments.push(newComment);
   localStorage.setItem('exercises', JSON.stringify(data));
 
@@ -231,7 +276,21 @@ function addComment() {
     commentCount.textContent = data[exerciseId].comments.length;
   }
 
-  alert('Commentaar succesvol geplaatst!');
+  // Try to post to server
+  try {
+    const resp = await fetch(`/api/exercises/${exerciseId}/comments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ author: currentUser, text: commentText })
+    });
+
+    if (!resp.ok) throw new Error('Server response not OK');
+
+    alert('Commentaar succesvol geplaatst!');
+  } catch (err) {
+    console.log('Server update failed (comment):', err.message);
+    alert('Commentaar lokaal opgeslagen (server niet bereikbaar).');
+  }
 }
 
 // Close modal
@@ -239,10 +298,35 @@ function closeModal() {
   document.getElementById('comment-modal').style.display = 'none';
 }
 
+// Sync with server if available
+async function syncFromServer() {
+  try {
+    const resp = await fetch('/api/all');
+    if (!resp.ok) throw new Error('Server response not ok');
+    const data = await resp.json();
+
+    const baseIds = new Set(exercisesData.map(e => e.id));
+    const custom = data.exercises.filter(e => !baseIds.has(e.id));
+    localStorage.setItem('customExercises', JSON.stringify(custom));
+
+    // server stores userData keyed by id
+    localStorage.setItem('exercises', JSON.stringify(data.userData || {}));
+
+    // Re-render with server data
+    renderExercises();
+  } catch (err) {
+    // Server not available; remain using localStorage
+    console.log('Kunnen niet syncen met server:', err.message);
+  }
+}
+
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
   initializeStorage();
   renderExercises();
+
+  // Try to sync from server (non-blocking)
+  syncFromServer();
 
   // Modal event listeners
   const modal = document.getElementById('comment-modal');

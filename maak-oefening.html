@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Maak Oefening</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="trainingen.html">Trainingen</a></li>
+      <li><a href="exercises.html">Oefeningen</a></li>
+      <li><a href="mijn-oefeningen.html">Mijn Oefeningen</a></li>
+      <li><a href="maak-oefening.html" class="active">Maak Oefening</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <header>
+      <h1>Maak een eigen oefening</h1>
+      <p>Vul het formulier in om een oefening toe te voegen aan de lijst.</p>
+    </header>
+
+    <main>
+      <form id="create-exercise-form" class="create-form">
+        <label for="title">Titel</label>
+        <input id="title" name="title" type="text" required maxlength="100" />
+
+        <label for="author">Auteur</label>
+        <input id="author" name="author" type="text" required maxlength="60" />
+
+        <label for="description">Beschrijving</label>
+        <textarea id="description" name="description" rows="6" required maxlength="1000"></textarea>
+
+        <!-- Visual editor -->
+        <section class="visual-editor">
+          <h3>Visuele Oefening Opbouw</h3>
+          <p class="muted">Upload plaatjes in de vakjes en plaats ze op het groene speelveld. Sleep items om te verplaatsen. Dubbelklik geplaatst item om te verwijderen.</p>
+
+          <div class="visual-row">
+            <div id="playfield" class="playfield" tabindex="0"></div>
+
+            <div class="palette">
+              <div class="palette-grid" id="palette-grid">
+                <!-- Slots added via JS -->
+              </div>
+              <div class="palette-actions">
+                <button type="button" id="clear-palette">Leegmaken</button>
+                <button type="button" id="reset-playfield">Reset speelveld</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="form-actions">
+          <button type="submit" id="submit-btn">Oefening toevoegen</button>
+          <a href="exercises.html" class="button-link">Annuleren</a>
+        </div>
+
+        <div id="form-message" class="form-message" role="status" aria-live="polite"></div>
+      </form>
+    </main>
+  </div>
+
+  <script src="maak-oefening.js"></script>
+</body>
+
+</html>

@@ -2,3 +2,9 @@
 
 # logfile of webserver
 .nohup_webserver.out
+
+# Node modules
+node_modules/
+
+# Environment
+.env

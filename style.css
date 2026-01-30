@@ -93,9 +93,10 @@ header p {
 /* Exercises Grid */
 .exercises-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  /* show one exercise per row so visuals are larger */
+  grid-template-columns: 1fr;
   gap: 25px;
-}
+} 
 
 /* Exercise Card */
 .exercise-card {
@@ -427,4 +428,69 @@ header p {
 .remove-btn:hover {
   color: #ff6b6b;
   transform: scale(1.3);
+}
+
+/* Visual editor */
+.visual-editor {
+  margin-top: 20px;
+  border: 1px solid #e6e6e6;
+  padding: 18px;
+  border-radius: 8px;
+  background: #fafafa;
+}
+.visual-editor h3 { margin-top: 0; }
+.visual-editor .muted { color: #666; font-size: 0.95em; margin-bottom: 12px; }
+.visual-row { display: flex; gap: 20px; align-items: flex-start; }
+.playfield {
+  background: #1b7b2a; /* green */
+  width: 640px;
+  height: 360px;
+  border: 10px solid #8a8a8a;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 6px rgba(0,0,0,0.03);
+}
+.playfield .placed-item {
+  position: absolute;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+.playfield .placed-item img { display: block; max-width: 100%; height: auto; pointer-events: none; }
+
+.palette { width: 240px; }
+.palette-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.slot {
+  width: 52px; height: 52px; background: #f0f0f0; border-radius: 6px; border: 2px solid #ddd; position: relative; display:flex; align-items:center; justify-content:center; overflow:hidden;
+}
+.slot img { max-width: 100%; max-height: 100%; display:block; }
+.slot input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.slot .placeholder { color: #aaa; font-size: 0.8em; }
+.palette-actions { margin-top: 12px; display:flex; gap:8px; }
+.palette-actions button { padding:6px 8px; border-radius:4px; border:1px solid #ddd; cursor:pointer; background:white }
+
+.visual-preview {
+  width: 100%;
+  height: 360px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  border-radius: 4px;
+  position: relative;
+  background: #1b7b2a;
+}
+.visual-preview img {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  /* allow images to render at the specified percent width inside the preview */
+  max-width: none;
+  max-height: none;
+}
+
+/* small responsive tweaks */
+@media (max-width: 900px) {
+  .visual-row { flex-direction: column; }
+  .playfield { width: 100%; height: 320px; }
+  .palette { width: 100%; }
 }

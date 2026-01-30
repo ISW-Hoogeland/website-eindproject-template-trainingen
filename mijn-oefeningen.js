@@ -69,20 +69,30 @@ function updateUserData(exerciseId, updates) {
   localStorage.setItem('exercises', JSON.stringify(data));
 }
 
+// Load custom exercises from localStorage
+function loadCustomExercises() {
+  return JSON.parse(localStorage.getItem('customExercises') || '[]');
+}
+
+// Get all exercises (base + custom)
+function getAllExercises() {
+  return [...exercisesData, ...loadCustomExercises()];
+}
+
 // Get exercise by ID
 function getExerciseById(id) {
-  return exercisesData.find(ex => ex.id === id);
+  return getAllExercises().find(ex => ex.id === id);
 }
 
 // Get filtered exercises
 function getFavorites() {
   const data = JSON.parse(localStorage.getItem('exercises'));
-  return exercisesData.filter(exercise => data[exercise.id]?.favorite);
+  return getAllExercises().filter(exercise => data[exercise.id]?.favorite);
 }
 
 function getSaved() {
   const data = JSON.parse(localStorage.getItem('exercises'));
-  return exercisesData.filter(exercise => data[exercise.id]?.saved);
+  return getAllExercises().filter(exercise => data[exercise.id]?.saved);
 }
 
 // Update counts
@@ -109,6 +119,7 @@ function createExerciseCard(exercise) {
     </div>
     <div class="exercise-author">${exercise.author}</div>
     <div class="exercise-description">${exercise.description}</div>
+    ${exercise.visual ? '<div class="visual-preview" data-ex-id="'+exercise.id+'"></div>' : ''}
     <div class="exercise-footer">
       <div class="comment-section">
         <button class="comment-btn" data-exercise-id="${exercise.id}">💬 Commentaar</button>
@@ -122,6 +133,24 @@ function createExerciseCard(exercise) {
 
   removeBtn.addEventListener('click', () => removeExercise(exercise.id, card));
   commentBtn.addEventListener('click', () => openCommentModal(exercise, userData.comments || []));
+
+  // If visual exists: render a preview similar to the main exercises page
+  if (exercise.visual && exercise.visual.palette && exercise.visual.placed) {
+    const preview = card.querySelector('.visual-preview');
+    if (preview) {
+      preview.innerHTML = '';
+      exercise.visual.placed.forEach(p => {
+        const imgSrc = exercise.visual.palette && exercise.visual.palette[p.imageIndex];
+        if (!imgSrc) return;
+        const el = document.createElement('img');
+        el.src = imgSrc;
+        el.style.left = `${p.x}%`;
+        el.style.top = `${p.y}%`;
+        el.style.width = `${p.w}%`;
+        preview.appendChild(el);
+      });
+    }
+  }
 
   return card;
 }
@@ -140,6 +169,13 @@ function removeExercise(exerciseId, cardElement) {
   updateUserData(exerciseId, userData);
   cardElement.remove();
   updateCounts();
+
+  // Try to push to server
+  fetch(`/api/userdata/${exerciseId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(userData)
+  }).catch(err => console.log('Server update failed (remove):', err.message));
 
   // Show empty state if needed
   checkEmptyStates();
@@ -251,6 +287,27 @@ function setupTabs() {
   });
 }
 
+// Try to sync from server
+async function syncFromServer() {
+  try {
+    const resp = await fetch('/api/all');
+    if (!resp.ok) throw new Error('Server response not ok');
+    const data = await resp.json();
+
+    const baseIds = new Set(exercisesData.map(e => e.id));
+    const custom = data.exercises.filter(e => !baseIds.has(e.id));
+    localStorage.setItem('customExercises', JSON.stringify(custom));
+
+    localStorage.setItem('exercises', JSON.stringify(data.userData || {}));
+
+    // Re-render
+    renderFavorites();
+    updateCounts();
+  } catch (err) {
+    console.log('Kunnen niet syncen met server:', err.message);
+  }
+}
+
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
   // Setup tabs
@@ -259,6 +316,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initial render
   renderFavorites();
   updateCounts();
+
+  // Try server sync
+  syncFromServer();
 
   // Modal event listeners
   const modal = document.getElementById('comment-modal');
