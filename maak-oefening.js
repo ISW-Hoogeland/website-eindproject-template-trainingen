@@ -3,10 +3,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const messageEl = document.getElementById('form-message');
 
   // Visual editor state
-  const PALETTE_SLOTS = 12;
-  let palette = JSON.parse(localStorage.getItem('visualPalette') || '[]');
+  // Fixed palette: edit these paths to add/remove images integrated in the website
+  const FIXED_PALETTE = [
+    // Files from images/readme/ — pas aan naar eigen bestanden
+    'images/readme/korfbalpaal.png',
+  ];
+  const PALETTE_SLOTS = FIXED_PALETTE.length;
+  const palette = FIXED_PALETTE.slice();
   let placed = JSON.parse(localStorage.getItem('visualPlaced') || '[]');
-  let dragState = null; // {type: 'palette'|'placed', index, ghostEl, offsetX, offsetY}
+  let dragState = null; // {type: 'palette'|'placed', index, ghostEl, offsetX, offsetY} 
 
   try {
     initVisualEditor();
@@ -46,13 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
       placeholder.textContent = '+';
       slot.appendChild(placeholder);
 
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = 'image/*';
-      input.addEventListener('change', (ev) => handleFileSelect(ev, i));
-      slot.appendChild(input);
-
-      // if there's an image, show it
+      // show fixed image if available
       if (palette[i]) {
         const img = document.createElement('img');
         img.src = palette[i];
@@ -62,6 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // pointerdown for drag from palette
         img.addEventListener('pointerdown', (ev) => startPaletteDrag(ev, i));
         img.style.touchAction = 'none';
+      } else {
+        // no image configured for this slot
+        slot.classList.add('empty-slot');
       }
 
       // clicking slot will allow placing the image if present
@@ -83,13 +85,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // if user had selected a palette item for click-placement, handled by slot click
     });
 
-    document.getElementById('clear-palette').addEventListener('click', () => {
-      if (confirm('Weet je zeker dat je alle plaatjes uit de palette wilt verwijderen?')) {
-        palette = [];
-        localStorage.removeItem('visualPalette');
-        initVisualEditor();
-      }
-    });
+    const clearBtn = document.getElementById('clear-palette');
+    if (clearBtn) {
+      clearBtn.disabled = true;
+      clearBtn.title = 'Palette is vast; wijzig afbeeldingen in maak-oefening.js';
+      clearBtn.textContent = 'Leegmaken (niet beschikbaar)';
+    }
 
     document.getElementById('reset-playfield').addEventListener('click', () => {
       if (confirm('Reset speelveld (verwijdert geplaatste items)?')) {
@@ -127,18 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // handle file upload into slot
-  function handleFileSelect(ev, index) {
-    const file = ev.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      palette[index] = e.target.result; // data URL
-      localStorage.setItem('visualPalette', JSON.stringify(palette));
-      initVisualEditor();
-    };
-    reader.readAsDataURL(file);
-  }
+  // file upload removed — palette is fixed via FIXED_PALETTE
 
   // start dragging a palette image
   function startPaletteDrag(ev, index) {
@@ -196,43 +186,110 @@ document.addEventListener('DOMContentLoaded', () => {
 
       wrapper.appendChild(img);
 
-      // allow dragging placed items
-      let moving = false;
-      let startX = 0, startY = 0, startLeft = 0, startTop = 0;
+      // resize handle (drag to resize)
+      const handle = document.createElement('div');
+      handle.className = 'resize-handle';
+      handle.title = 'Sleep om te vergroten/verkleinen (of gebruik scroll)';
+      wrapper.appendChild(handle);
 
+      // allow dragging placed items and resizing
+      let moving = false;
+      let resizing = false;
+      let startX = 0, startY = 0, startLeft = 0, startTop = 0, startW = 0;
+
+      // Use document-level pointer handlers for robust dragging/resizing
       wrapper.addEventListener('pointerdown', (ev) => {
+        // clicks on handle are handled by handle listener
+        if (ev.target === handle) return;
         ev.stopPropagation();
         moving = true;
-        wrapper.setPointerCapture(ev.pointerId);
         startX = ev.clientX;
         startY = ev.clientY;
-        // compute initial percent positions
         startLeft = p.x;
         startTop = p.y;
         wrapper.style.cursor = 'grabbing';
+
+        const onDocMove = (mv) => {
+          if (!moving) return;
+          const pf = document.getElementById('playfield');
+          const rect = pf.getBoundingClientRect();
+          const dx = mv.clientX - startX;
+          const dy = mv.clientY - startY;
+          const deltaXPct = (dx / rect.width) * 100;
+          const deltaYPct = (dy / rect.height) * 100;
+          p.x = Math.min(100, Math.max(0, startLeft + deltaXPct));
+          p.y = Math.min(100, Math.max(0, startTop + deltaYPct));
+          wrapper.style.left = `calc(${p.x}% - ${p.w / 2}%)`;
+          wrapper.style.top = `calc(${p.y}% - ${p.w / 2}%)`;
+        };
+
+        const onDocUp = (up) => {
+          if (moving) {
+            moving = false;
+            wrapper.style.cursor = 'grab';
+            document.removeEventListener('pointermove', onDocMove);
+            document.removeEventListener('pointerup', onDocUp);
+            localStorage.setItem('visualPlaced', JSON.stringify(placed));
+          }
+        };
+
+        document.addEventListener('pointermove', onDocMove);
+        document.addEventListener('pointerup', onDocUp);
       });
 
-      wrapper.addEventListener('pointermove', (ev) => {
-        if (!moving) return;
-        const pf = document.getElementById('playfield');
-        const rect = pf.getBoundingClientRect();
-        const dx = ev.clientX - startX;
-        const dy = ev.clientY - startY;
-        const deltaXPct = (dx / rect.width) * 100;
-        const deltaYPct = (dy / rect.height) * 100;
-        p.x = Math.min(100, Math.max(0, startLeft + deltaXPct));
-        p.y = Math.min(100, Math.max(0, startTop + deltaYPct));
+      handle.addEventListener('pointerdown', (ev) => {
+        ev.stopPropagation();
+        ev.preventDefault();
+        resizing = true;
+        startX = ev.clientX;
+        startW = p.w;
+        wrapper.classList.add('resizing');
+
+        const onDocMove = (mv) => {
+          if (!resizing) return;
+          const pf = document.getElementById('playfield');
+          const rect = pf.getBoundingClientRect();
+          const dx = mv.clientX - startX;
+          const deltaPct = (dx / rect.width) * 100;
+          const newW = Math.min(80, Math.max(2, startW + deltaPct));
+          p.w = newW;
+          wrapper.style.width = `${p.w}%`;
+          wrapper.style.left = `calc(${p.x}% - ${p.w / 2}%)`;
+          wrapper.style.top = `calc(${p.y}% - ${p.w / 2}%)`;
+        };
+
+        const onDocUp = () => {
+          if (resizing) {
+            resizing = false;
+            wrapper.classList.remove('resizing');
+            document.removeEventListener('pointermove', onDocMove);
+            document.removeEventListener('pointerup', onDocUp);
+            localStorage.setItem('visualPlaced', JSON.stringify(placed));
+          }
+        };
+
+        document.addEventListener('pointermove', onDocMove);
+        document.addEventListener('pointerup', onDocUp);
+      });
+
+      // pointercancel for touch or interruptions
+      wrapper.addEventListener('pointercancel', (ev) => {
+        moving = false;
+        resizing = false;
+        wrapper.style.cursor = 'grab';
+        wrapper.classList.remove('resizing');
+      });
+
+      // wheel to fine-tune size
+      wrapper.addEventListener('wheel', (ev) => {
+        ev.preventDefault();
+        const step = ev.shiftKey ? 10 : 2;
+        p.w = Math.min(80, Math.max(2, p.w + (ev.deltaY < 0 ? step : -step)));
+        wrapper.style.width = `${p.w}%`;
         wrapper.style.left = `calc(${p.x}% - ${p.w / 2}%)`;
         wrapper.style.top = `calc(${p.y}% - ${p.w / 2}%)`;
-      });
-
-      wrapper.addEventListener('pointerup', (ev) => {
-        if (!moving) return;
-        moving = false;
-        wrapper.releasePointerCapture(ev.pointerId);
-        wrapper.style.cursor = 'grab';
         localStorage.setItem('visualPlaced', JSON.stringify(placed));
-      });
+      }, { passive: false });
 
       // double click to remove
       wrapper.addEventListener('dblclick', (ev) => {
@@ -285,8 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
       exercisesMap[created.id] = { favorite: false, saved: false, comments: [] };
       localStorage.setItem('exercises', JSON.stringify(exercisesMap));
 
-      // clear draft visual
-      localStorage.removeItem('visualPalette');
+      // clear draft visual (placed items only — palette is fixed)
       localStorage.removeItem('visualPlaced');
 
       showMessage('Oefening succesvol toegevoegd! Je wordt doorgestuurd naar de oefeningenpagina...', false);
@@ -323,8 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
       exercisesMap[newId] = { favorite: false, saved: false, comments: [] };
       localStorage.setItem('exercises', JSON.stringify(exercisesMap));
 
-      // clear draft visual
-      localStorage.removeItem('visualPalette');
+      // clear draft visual (placed items only — palette is fixed)
       localStorage.removeItem('visualPlaced');
 
       showMessage('Oefening lokaal toegevoegd (server niet bereikbaar). Je wordt doorgestuurd...', false);
