@@ -6,52 +6,7 @@ const exercisesData = [
     description: "Leer de fundamentele HTML-elementen. Deze oefening behandelt tags, attributen en structuur van een webpagina.",
     author: "Jan de Vries",
     comments: [
-      { author: "Maria Lopez", text: "Goede uitleg!", date: "2025-01-20" }
-    ]
-  },
-  {
-    id: 2,
-    title: "CSS Layout",
-    description: "Master CSS Grid en Flexbox. Leer hoe je professionele layouts maakt met moderne CSS technieken.",
-    author: "Sophie Müller",
-    comments: [
-      { author: "Ahmed Hassan", text: "Zeer nuttig!", date: "2025-01-19" },
-      { author: "Lisa Chen", text: "Perfect niveau voor beginners", date: "2025-01-18" }
-    ]
-  },
-  {
-    id: 3,
-    title: "JavaScript Events",
-    description: "Begrijp hoe JavaScript events werken. Interactiviteit toevoegen aan je webpagina's is essentieel.",
-    author: "Marcus Johnson",
-    comments: []
-  },
-  {
-    id: 4,
-    title: "Responsive Design",
-    description: "Maak websites die goed werken op elk apparaat. Media queries en mobiele-first aanpak zijn het onderwerp.",
-    author: "Emma Wilson",
-    comments: [
-      { author: "Tom Anderson", text: "Erg goed uitgelegd", date: "2025-01-17" }
-    ]
-  },
-  {
-    id: 5,
-    title: "Git Basis",
-    description: "Leer versiebeheersystemen. Git is essentieel voor elke developer. Repository, commits en branches.",
-    author: "David Kumar",
-    comments: [
-      { author: "Sofia Rodriguez", text: "Eindelijk begrijp ik git!", date: "2025-01-16" },
-      { author: "James White", text: "Duidelijke voorbeelden", date: "2025-01-15" }
-    ]
-  },
-  {
-    id: 6,
-    title: "API Integratie",
-    description: "Werk met externe API's. Leer hoe je data ophaalt en gebruikt via REST API's.",
-    author: "Laura Bergström",
-    comments: [
-      { author: "Raj Patel", text: "Praktische voorbeelden zijn geweldig", date: "2025-01-14" }
+      { author: "Maria Lopez", text: "Test", date: "2025-01-20" }
     ]
   }
 ];
@@ -125,6 +80,7 @@ function createExerciseCard(exercise, userData) {
       <div class="exercise-actions">
         <button class="action-btn favorite-btn ${favoriteClass}" data-exercise-id="${exercise.id}" title="Favorieten">★</button>
         <button class="action-btn save-btn ${saveClass}" data-exercise-id="${exercise.id}" title="Opslaan">💾</button>
+        <button class="action-btn add-to-training-btn" data-exercise-id="${exercise.id}" title="Voeg toe aan training">📚</button>
       </div>
     </div>
     <div class="exercise-author">${exercise.author}</div>
@@ -142,10 +98,12 @@ function createExerciseCard(exercise, userData) {
   const favoriteBtn = card.querySelector('.favorite-btn');
   const saveBtn = card.querySelector('.save-btn');
   const commentBtn = card.querySelector('.comment-btn');
+  const addToTrainingBtn = card.querySelector('.add-to-training-btn');
 
   favoriteBtn.addEventListener('click', () => toggleFavorite(exercise.id, favoriteBtn));
   saveBtn.addEventListener('click', () => toggleSave(exercise.id, saveBtn));
   commentBtn.addEventListener('click', () => openCommentModal(exercise));
+  addToTrainingBtn.addEventListener('click', () => openAddToTrainingModal(exercise));
 
   // If visual exists: render preview
   if (exercise.visual && exercise.visual.palette && exercise.visual.placed) {
@@ -298,6 +256,105 @@ function closeModal() {
   document.getElementById('comment-modal').style.display = 'none';
 }
 
+// Open modal to add exercise to training
+function openAddToTrainingModal(exercise) {
+  const modal = document.getElementById('add-to-training-modal');
+  if (!modal) return; // Modal not available (not on exercises page)
+  
+  modal.dataset.exerciseId = exercise.id;
+  document.getElementById('exercise-title-display').textContent = `Oefening: ${exercise.title}`;
+  
+  // Load trainingen
+  renderTrainingenSelect();
+  
+  modal.style.display = 'block';
+}
+
+// Render trainingen in select modal
+function renderTrainingenSelect() {
+  const container = document.getElementById('trainingen-select');
+  container.innerHTML = '';
+  
+  const trainingen = JSON.parse(localStorage.getItem('trainingen') || '[]');
+  
+  if (trainingen.length === 0) {
+    container.innerHTML = '<p style="color: #999; text-align: center;">Geen trainingen beschikbaar. Maak eerst een training aan op de Trainingen pagina.</p>';
+    return;
+  }
+  
+  const ul = document.createElement('ul');
+  ul.style.listStyle = 'none';
+  ul.style.padding = '0';
+  ul.style.margin = '0';
+  
+  trainingen.forEach(training => {
+    const li = document.createElement('li');
+    li.style.padding = '10px';
+    li.style.borderBottom = '1px solid #eee';
+    li.style.cursor = 'pointer';
+    li.style.transition = 'background-color 0.2s';
+    li.className = 'training-option';
+    li.dataset.trainingId = training.id;
+    
+    li.innerHTML = `
+      <strong>${training.name}</strong><br/>
+      <small style="color: #666;">${training.description}</small>
+    `;
+    
+    li.addEventListener('click', () => {
+      document.querySelectorAll('.training-option').forEach(el => el.style.backgroundColor = 'transparent');
+      li.style.backgroundColor = '#f0f7ff';
+      document.getElementById('add-to-training-modal').dataset.selectedTrainingId = training.id;
+    });
+    
+    li.addEventListener('mouseover', () => li.style.backgroundColor = '#f9f9f9');
+    li.addEventListener('mouseout', function() {
+      if (document.getElementById('add-to-training-modal').dataset.selectedTrainingId !== this.dataset.trainingId) {
+        this.style.backgroundColor = 'transparent';
+      }
+    });
+    
+    ul.appendChild(li);
+  });
+  
+  container.appendChild(ul);
+}
+
+// Confirm adding exercise to training
+function confirmAddToTraining() {
+  const modal = document.getElementById('add-to-training-modal');
+  const exerciseId = parseInt(modal.dataset.exerciseId);
+  const trainingId = parseInt(modal.dataset.selectedTrainingId);
+  
+  if (!trainingId) {
+    alert('Selecteer alstublieft een training');
+    return;
+  }
+  
+  // Load trainingen and update
+  const trainingen = JSON.parse(localStorage.getItem('trainingen') || '[]');
+  const training = trainingen.find(t => t.id === trainingId);
+  
+  if (training && !training.exerciseIds.includes(exerciseId)) {
+    training.exerciseIds.push(exerciseId);
+    localStorage.setItem('trainingen', JSON.stringify(trainingen));
+    alert('Oefening succesvol toegevoegd aan training!');
+    closeAddToTrainingModal();
+  } else if (training && training.exerciseIds.includes(exerciseId)) {
+    alert('Deze oefening staat al in de training');
+  }
+}
+
+// Close add to training modal
+function closeAddToTrainingModal() {
+  const modal = document.getElementById('add-to-training-modal');
+  if (modal) {
+    modal.style.display = 'none';
+    modal.dataset.exerciseId = '';
+    modal.dataset.selectedTrainingId = '';
+  }
+}
+
 // Sync with server if available
 async function syncFromServer() {
   try {
@@ -328,7 +385,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Try to sync from server (non-blocking)
   syncFromServer();
 
-  // Modal event listeners
+  // Modal event listeners for comment modal
   const modal = document.getElementById('comment-modal');
   const closeBtn = document.querySelector('.close');
   const submitBtn = document.getElementById('submit-comment');
@@ -349,4 +406,20 @@ document.addEventListener('DOMContentLoaded', function() {
       addComment();
     }
   });
+
+  // Add to training modal event listeners
+  const addToTrainingModal = document.getElementById('add-to-training-modal');
+  if (addToTrainingModal) {
+    const addToTrainingCloseBtn = addToTrainingModal.querySelector('.close');
+    const addToTrainingConfirmBtn = document.getElementById('add-to-training-confirm');
+    
+    addToTrainingCloseBtn.addEventListener('click', closeAddToTrainingModal);
+    addToTrainingConfirmBtn.addEventListener('click', confirmAddToTraining);
+    
+    window.addEventListener('click', function(event) {
+      if (event.target === addToTrainingModal) {
+        closeAddToTrainingModal();
+      }
+    });
+  }
 });

@@ -6,61 +6,20 @@
       "description": "Leer de fundamentele HTML-elementen. Deze oefening behandelt tags, attributen en structuur van een webpagina.",
       "author": "Jan de Vries",
       "comments": [
-        { "author": "Maria Lopez", "text": "Goede uitleg!", "date": "2025-01-20" }
-      ]
-    },
-    {
-      "id": 2,
-      "title": "CSS Layout",
-      "description": "Master CSS Grid en Flexbox. Leer hoe je professionele layouts maakt met moderne CSS technieken.",
-      "author": "Sophie Müller",
-      "comments": [
-        { "author": "Ahmed Hassan", "text": "Zeer nuttig!", "date": "2025-01-19" },
-        { "author": "Lisa Chen", "text": "Perfect niveau voor beginners", "date": "2025-01-18" }
-      ]
-    },
-    {
-      "id": 3,
-      "title": "JavaScript Events",
-      "description": "Begrijp hoe JavaScript events werken. Interactiviteit toevoegen aan je webpagina's is essentieel.",
-      "author": "Marcus Johnson",
-      "comments": []
-    },
-    {
-      "id": 4,
-      "title": "Responsive Design",
-      "description": "Maak websites die goed werken op elk apparaat. Media queries en mobiele-first aanpak zijn het onderwerp.",
-      "author": "Emma Wilson",
-      "comments": [
-        { "author": "Tom Anderson", "text": "Erg goed uitgelegd", "date": "2025-01-17" }
-      ]
-    },
-    {
-      "id": 5,
-      "title": "Git Basis",
-      "description": "Leer versiebeheersystemen. Git is essentieel voor elke developer. Repository, commits en branches.",
-      "author": "David Kumar",
-      "comments": [
-        { "author": "Sofia Rodriguez", "text": "Eindelijk begrijp ik git!", "date": "2025-01-16" },
-        { "author": "James White", "text": "Duidelijke voorbeelden", "date": "2025-01-15" }
-      ]
-    },
-    {
-      "id": 6,
-      "title": "API Integratie",
-      "description": "Werk met externe API's. Leer hoe je data ophaalt en gebruikt via REST API's.",
-      "author": "Laura Bergström",
-      "comments": [
-        { "author": "Raj Patel", "text": "Praktische voorbeelden zijn geweldig", "date": "2025-01-14" }
+        { "author": "Maria Lopez", "text": "Test", "date": "2025-01-20" }
       ]
     }
   ],
   "userData": {
-    "1": { "favorite": false, "saved": false, "comments": [ { "author": "Maria Lopez", "text": "Goede uitleg!", "date": "2025-01-20" } ] },
-    "2": { "favorite": false, "saved": false, "comments": [ { "author": "Ahmed Hassan", "text": "Zeer nuttig!", "date": "2025-01-19" }, { "author": "Lisa Chen", "text": "Perfect niveau voor beginners", "date": "2025-01-18" } ] },
-    "3": { "favorite": false, "saved": false, "comments": [] },
-    "4": { "favorite": false, "saved": false, "comments": [ { "author": "Tom Anderson", "text": "Erg goed uitgelegd", "date": "2025-01-17" } ] },
-    "5": { "favorite": false, "saved": false, "comments": [ { "author": "Sofia Rodriguez", "text": "Eindelijk begrijp ik git!", "date": "2025-01-16" }, { "author": "James White", "text": "Duidelijke voorbeelden", "date": "2025-01-15" } ] },
-    "6": { "favorite": false, "saved": false, "comments": [ { "author": "Raj Patel", "text": "Praktische voorbeelden zijn geweldig", "date": "2025-01-14" } ] }
-  }
+    "1": { "favorite": false, "saved": false, "comments": [ { "author": "Maria Lopez", "text": "Test", "date": "2025-01-20" } ] }
+  },
+  "trainingen": [
+    {
+      "id": 1,
+      "name": "Web Fundamentals",
+      "description": "Complete introductie tot webontwikkeling",
+      "exerciseIds": [1],
+      "createdAt": "2025-01-20"
+    }
+  ]
 }
