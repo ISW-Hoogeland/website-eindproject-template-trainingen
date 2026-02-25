@@ -14,21 +14,14 @@ function loadTrainingen() {
   if (saved) {
     return JSON.parse(saved);
   }
-  // Default trainingen
+  // Default trainingen (houd alleen de ene training met de enkele oefening)
   return [
     {
       id: 1,
       name: "Web Fundamentals",
       description: "Complete introductie tot webontwikkeling",
-      exerciseIds: [1, 2],
+      exerciseIds: [1],
       createdAt: "2025-01-20"
-    },
-    {
-      id: 2,
-      name: "Geavanceerde JavaScript",
-      description: "Dieper ingaan op JavaScript en interactiviteit",
-      exerciseIds: [3, 5],
-      createdAt: "2025-01-19"
     }
   ];
 }
