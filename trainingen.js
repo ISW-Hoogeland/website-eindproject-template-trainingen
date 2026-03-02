@@ -5,6 +5,12 @@ const exercisesData = [
     title: "HTML Basis",
     description: "Leer de fundamentele HTML-elementen. Deze oefening behandelt tags, attributen en structuur van een webpagina.",
     author: "Jan de Vries"
+  },
+  { 
+    id: 2,
+    title: "Warming-up",
+    description: "Een goede warming-up om de spieren warm te krijgen: begin met één keer heen en weer joggen van een lijn tot een andere lijn. Dan hakken billen heen en knieën heffen terug. Zijwaartse sprongen heen, kruispas terug. En ten slotte benen omhoog schoppen heen en sprinten terug.",
+    author: "Thijs Beerkens"
   }
 ];
 

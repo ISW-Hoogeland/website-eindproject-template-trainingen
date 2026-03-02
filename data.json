@@ -8,6 +8,11 @@
       "comments": [
         { "author": "Maria Lopez", "text": "Test", "date": "2025-01-20" }
       ]
+    },
+    { "id": 2,
+      "title": "Warming-up",
+      "description": "Een goede warming-up om de spieren warm te krijgen:",
+      "author": "Thijs Beerkens"
     }
   ],
   "userData": {
