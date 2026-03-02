@@ -4,6 +4,10 @@
   padding: 10px 20px;
   display: flex;
   justify-content: flex-end;
+  background-color: #0d730d;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .navbar ul {
@@ -22,14 +26,15 @@
   display: block;
   color: white;
   text-decoration: none;
-  padding: 10px 15px;
-  margin: 5px;
-  border-radius: 8px;
+  padding: 15px 20px;
 }
 
 .navbar a:hover,
 .navbar a.active {
   background-color: #135413;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin: 5px;
 }
 
 /* Container and Header */
@@ -62,7 +67,7 @@ header h1 {
 
 header p {
   color: #666;
-  font-size: 1.5em;
+  font-size: 1.1em;
 }
 
 
@@ -71,15 +76,15 @@ header p {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 2 naast elkaar */
   gap: 25px;
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-top: 40px;
+  margin-left: 40px;
+  margin-right: 40px;
 }
 
 .home-box {
   background: white;
   padding: 25px;
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   text-align: center;
 }
