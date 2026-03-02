@@ -22,10 +22,67 @@
   <div class="container">
     <header>
       <h1>Trainingen</h1>
-      <p>Beschikbare trainingsmodules</p>
+      <p>Bundel oefeningen in trainingen en leer op structureerde manier</p>
     </header>
-    <p>Trainingen content komt hier...</p>
+    
+    <div class="trainingen-section">
+      <button id="create-training-btn" class="btn btn-primary">+ Nieuwe Training</button>
+      
+      <div id="trainingen-list" class="trainingen-grid">
+        <!-- Trainingen will be loaded here by JavaScript -->
+      </div>
+    </div>
   </div>
+
+  <!-- Modal for viewing exercises in training -->
+  <div id="training-exercises-modal" class="modal training-exercises-modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeTrainingExercisesModal()">&times;</span>
+      <h2>Oefeningen in <span id="training-exercises-title"></span></h2>
+      
+      <div id="training-exercises-list" class="training-exercises-grid">
+        <!-- Exercises will be loaded here by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for creating/editing training -->
+  <div id="training-modal" class="modal training-modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Training Beheren</h2>
+      
+      <form id="training-form">
+        <div class="form-group">
+          <label for="training-name">Trainingsnaam *</label>
+          <input type="text" id="training-name" placeholder="Voer trainingsnaam in..." required>
+        </div>
+        
+        <div class="form-group">
+          <label for="training-description">Beschrijving</label>
+          <textarea id="training-description" placeholder="Voer trainingsbeschrijving in..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="exercise-search">Zoeken en toevoegen oefeningen:</label>
+          <input type="text" id="exercise-search" placeholder="Zoek oefeningen...">
+          <div id="available-exercises" class="available-exercises"></div>
+        </div>
+        
+        <div class="form-group">
+          <label>Geselecteerde oefeningen *</label>
+          <div id="selected-exercises" class="selected-exercises"></div>
+        </div>
+        
+        <div class="modal-buttons">
+          <button type="button" id="save-training-btn" class="btn btn-primary">Opslaan</button>
+          <button type="button" class="btn btn-secondary" onclick="closeTrainingModal()">Annuleren</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="trainingen.js"></script>
 </body>
 
 </html>

@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const FIXED_PALETTE = [
     // Files from images/readme/ — pas aan naar eigen bestanden
     'images/readme/korfbalpaal.png',
+    'images/readme/andersomkorfbalpaal.png',
+    'images/readme/avatar.png',
+    'images/readme/avatar2.png',
   ];
   const PALETTE_SLOTS = FIXED_PALETTE.length;
   const palette = FIXED_PALETTE.slice();
