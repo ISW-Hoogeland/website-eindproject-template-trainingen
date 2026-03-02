@@ -37,10 +37,10 @@
 /* add your css here, feel free to use comments and order them logically for better readability */
 /* Navigation Bar */
 .navbar {
-  background-color: #20bb00;
-  padding: 0;
-  margin: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #0d730d;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .navbar ul {
@@ -59,12 +59,14 @@
   color: white;
   text-decoration: none;
   padding: 15px 20px;
-  transition: background-color 0.3s;
 }
 
 .navbar a:hover,
 .navbar a.active {
-  background-color: #0066cc;
+  background-color: #135413;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin: 5px;
 }
 
 /* Container and Header */
@@ -88,6 +90,39 @@ header h1 {
 header p {
   color: #666;
   font-size: 1.1em;
+}
+
+
+/* Home */
+.home-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 naast elkaar */
+  gap: 25px;
+  margin-top: 40px;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.home-box {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.home-button {
+  display: inline-block;
+  background-color: #0d730d;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.home-button:hover {
+  background-color: #135413;
 }
 
 /* Exercises Grid */
