@@ -72,7 +72,7 @@ header h1 {
 
 header p {
   color: #666;
-  font-size: 1.5em;
+  font-size: 1em;
 }
 
 
@@ -84,6 +84,7 @@ header p {
   margin-top: 20px;
   margin-left: 20px;
   margin-right: 20px;
+<<<<<<< HEAD
 }
 
 .home-box {
@@ -117,12 +118,14 @@ header p {
   margin-top: 40px;
   margin-left: 40px;
   margin-right: 40px;
+=======
+>>>>>>> 926dbfe (Kleine aanpassingen)
 }
 
 .home-box {
   background: white;
   padding: 25px;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   text-align: center;
 }
