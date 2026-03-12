@@ -1075,3 +1075,80 @@ header p {
   margin-bottom: 0;
 }
 
+.create-form {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+/* Ruimte tussen de invoerblokken */
+.form-group {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+/* Mooiere labels */
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 1.05rem;
+  transition: color 0.3s;
+}
+
+/* Styling voor de input en textarea */
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px; /* Rondere hoeken */
+  font-size: 1rem;
+  font-family: inherit;
+  color: #333;
+  background-color: #fcfcfc;
+  transition: all 0.3s ease;
+  box-sizing: border-box; /* Zorgt dat padding de box niet groter maakt */
+}
+
+/* Hover effect op de balkjes */
+.form-group input:hover,
+.form-group textarea:hover {
+  border-color: #bdc3c7;
+}
+
+/* Focus effect (wanneer je in een vakje klikt) */
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #0d730d; /* Matcht met je navbar groen */
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(13, 115, 13, 0.15); /* Zachte groene gloed */
+}
+
+/* Placeholder tekst kleur */
+::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* De 'Oefening toevoegen' knop iets meer presence geven */
+#submit-btn {
+  background-color: #0d730d;
+  color: white;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+#submit-btn:hover {
+  background-color: #135413;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
