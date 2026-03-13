@@ -27,19 +27,25 @@
 
     <main>
       <form id="create-exercise-form" class="create-form">
-        <label for="title">Titel</label>
-        <input id="title" name="title" type="text" required maxlength="100" />
+        <div class="form-group">
+          <label for="title">Titel van de oefening</label>
+          <input id="title" name="title" type="text" required maxlength="100"/>
+        </div>
 
-        <label for="author">Auteur</label>
-        <input id="author" name="author" type="text" required maxlength="60" />
+        <div class="form-group">
+          <label for="author">Auteur</label>
+          <input id="author" name="author" type="text" required maxlength="60"/>
+        </div>
 
-        <label for="description">Beschrijving</label>
-        <textarea id="description" name="description" rows="6" required maxlength="1000"></textarea>
+        <div class="form-group">
+          <label for="description">Beschrijving</label>
+          <textarea id="description" name="description" rows="6" required maxlength="1000"></textarea>
+        </div>
 
         <!-- Visual editor -->
         <section class="visual-editor">
           <h3>Visuele Oefening Opbouw</h3>
-          <p class="muted">Kies uit vaste plaatjes die in de site geïntegreerd zijn (aanpasbaar in <code>maak-oefening.js</code>, bijv. <code>images/readme/korfbalpaal.png</code>). Sleep items naar het groene speelveld om ze te plaatsen. Dubbelklik geplaatst item om te verwijderen.</p>
+          <p class="muted">Sleep items naar het groene speelveld om ze te plaatsen. Dubbelklik geplaatst item om te verwijderen.</p>
 
           <div class="visual-row">
             <div id="playfield" class="playfield" tabindex="0"></div>
