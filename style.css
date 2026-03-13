@@ -22,24 +22,15 @@
   display: block;
   color: white;
   text-decoration: none;
-<<<<<<< HEAD
-  padding: 10px 15px;
-  margin: 5px;
-  border-radius: 8px;
-=======
   padding: 15px 20px;
->>>>>>> e9e35b9 (Home pagina)
 }
 
 .navbar a:hover,
 .navbar a.active {
   background-color: #135413;
-<<<<<<< HEAD
-=======
   padding: 10px 15px;
   border-radius: 8px;
   margin: 5px;
->>>>>>> e9e35b9 (Home pagina)
 }
 
 /* Container and Header */
