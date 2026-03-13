@@ -1,29 +1,18 @@
 {
   "exercises": [
-    {
-      "id": 1,
-      "title": "HTML Basis",
-      "description": "Leer de fundamentele HTML-elementen. Deze oefening behandelt tags, attributen en structuur van een webpagina.",
-      "author": "Jan de Vries",
-      "comments": [
-        { "author": "Maria Lopez", "text": "Test", "date": "2025-01-20" }
-      ]
-    },
     { "id": 2,
       "title": "Warming-up",
       "description": "Een goede warming-up om de spieren warm te krijgen:",
       "author": "Thijs Beerkens"
     }
   ],
-  "userData": {
-    "1": { "favorite": false, "saved": false, "comments": [ { "author": "Maria Lopez", "text": "Test", "date": "2025-01-20" } ] }
-  },
+  "userData": {},
   "trainingen": [
     {
-      "id": 1,
-      "name": "Web Fundamentals",
-      "description": "Complete introductie tot webontwikkeling",
-      "exerciseIds": [1],
+      "id": 2,
+      "name": "Basketbal Training",
+      "description": "Verzameling van basketbal oefeningen voor training",
+      "exerciseIds": [2, 3, 4, 5],
       "createdAt": "2025-01-20"
     }
   ]

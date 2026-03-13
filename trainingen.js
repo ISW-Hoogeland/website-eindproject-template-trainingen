@@ -1,15 +1,99 @@
 // Sample exercises data (for reference)
 const exercisesData = [
-  {
-    id: 1,
-    title: "HTML Basis",
-    description: "Leer de fundamentele HTML-elementen. Deze oefening behandelt tags, attributen en structuur van een webpagina.",
-    author: "Jan de Vries"
-  },
   { 
     id: 2,
     title: "Warming-up",
     description: "Een goede warming-up om de spieren warm te krijgen: begin met één keer heen en weer joggen van een lijn tot een andere lijn. Dan hakken billen heen en knieën heffen terug. Zijwaartse sprongen heen, kruispas terug. En ten slotte benen omhoog schoppen heen en sprinten terug.",
+    author: "Thijs Beerkens"
+  },
+  {
+    id: 3,
+    title: "Rondje Korfschieten",
+    description: "Spelers staan rondom de korf op verschillende afstanden. Iedereen neemt om de beurt een schot. Bij een doelpunt mag je een stap verder naar achteren.",
+    author: "Thijs Beerkens"
+  },
+  {
+    id: 4,
+    title: "Rebound & Schot",
+    description: "Één speler schiet, één vangt af (rebound). Na de vangst speelt de rebounder de bal terug voor een nieuw schot. Na 5 pogingen wisselen.",
+    author: "Finne Elenbaas"
+  },
+  {
+    id: 5,
+    title: "Strafworpen Challenge",
+    description: "Iedere speler neemt 10 strafworpen. Tel hoeveel er raak zijn en probeer de volgende ronde je eigen score te verbeteren.",
+    author: "Thijs Beerkens"
+  },
+  {
+    id: 6,
+    title: "Schieten na Beweging",
+    description: "Spelers lopen vanaf een pion naar de korf, ontvangen een pass en schieten direct. Focus op timing en balans.",
+    author: "Finne Elenbaas"
+  },
+  {
+    id: 7,
+    title: "Doorloopbal Serie",
+    description: "Spelers maken achter elkaar doorloopballen. Na de doorloopbal vang je zelf af en sluit je achteraan in de rij.",
+    author: "Thijs Beerkens"
+  },
+  {
+    id: 8,
+    title: "Pionnen Pass Circuit",
+    description: "Zet meerdere pionnen neer. Spelers passen de bal terwijl ze naar de volgende pion lopen. Oefent nauwkeurig passen in beweging.",
+    author: "Finne Elenbaas"
+  },
+  {
+    id: 9,
+    title: "Driehoek Passen",
+    description: "Drie spelers vormen een driehoek. Ze passen continu rond terwijl ze hun positie volgen na de pass.",
+    author: "Thijs Beerkens"
+  },
+  {
+    id: 10,
+    title: "Snelle Balcirculatie",
+    description: "Vier spelers rondom een korf passen zo snel mogelijk rond zonder te laten vallen. Tel hoeveel passes in 1 minuut.",
+    author: "Finne Elenbaas"
+  },
+  {
+    id: 11,
+    title: "Pass & Cut",
+    description: "Na een pass snijdt de speler direct richting korf voor een mogelijke doorloopbal of schot.",
+    author: "Thijs Beerkens"
+  },
+  {
+    id: 12,
+    title: "Eén-Hand Pass Oefening",
+    description: "Spelers passen alleen met één hand. Wissel elke ronde van hand om techniek te verbeteren.",
+    author: "Finne Elenbaas"
+  },
+  {
+    id: 13,
+    title: "2 tegen 2 Miniwedstrijd",
+    description: "Twee teams spelen op één korf. Korte wedstrijden tot bijvoorbeeld 3 doelpunten.",
+    author: "Thijs Beerkens"
+  },
+  {
+    id: 14,
+    title: "Tikkertje met Bal",
+    description: "Eén speler is tikker met een bal. De bal moet naar iemand gegooid worden voordat er getikt wordt.",
+    author: "Finne Elenbaas"
+  },
+  {
+    id: 15,
+    title: "Schietwedstrijd Teams",
+    description: "Twee teams proberen zo snel mogelijk een bepaald aantal doelpunten te maken.",
+    author: "Thijs Beerkens"
+  },
+  {
+    id: 16,
+    title: "Koning van de Korf",
+    description: "Eén speler staat bij de korf en probeert te scoren. Als een andere speler scoort, wisselt hij met de 'koning'.",
+    author: "Finne Elenbaas"
+  },
+  {
+    id: 17,
+    title: "4 tegen 4 Aanval vs Verdediging",
+    description: "Vier aanvallers proberen kansen te creëren tegen vier verdedigers. Focus op vrijlopen en samenspel.",
     author: "Thijs Beerkens"
   }
 ];
@@ -20,13 +104,13 @@ function loadTrainingen() {
   if (saved) {
     return JSON.parse(saved);
   }
-  // Default trainingen (houd alleen de ene training met de enkele oefening)
+  // Default trainingen
   return [
     {
-      id: 1,
-      name: "Web Fundamentals",
-      description: "Complete introductie tot webontwikkeling",
-      exerciseIds: [1],
+      id: 2,
+      name: "Basketbal Training",
+      description: "Verzameling van basketbal oefeningen voor training",
+      exerciseIds: [2, 3, 4, 5],
       createdAt: "2025-01-20"
     }
   ];
