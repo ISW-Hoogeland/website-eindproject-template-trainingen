@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
     'images/readme/andersomkorfbalpaal.png',
     'images/readme/avatar.png',
     'images/readme/avatar2.png',
+    'images/readme/dopje.png',
+    'images/readme/pion.png',
+    'images/readme/laddertje.png',
+    'images/readme/korfbal.png',
   ];
   const PALETTE_SLOTS = FIXED_PALETTE.length;
   const palette = FIXED_PALETTE.slice();
