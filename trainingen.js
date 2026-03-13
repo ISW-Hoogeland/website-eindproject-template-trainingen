@@ -104,16 +104,8 @@ function loadTrainingen() {
   if (saved) {
     return JSON.parse(saved);
   }
-  // Default trainingen
-  return [
-    {
-      id: 2,
-      name: "Basketbal Training",
-      description: "Verzameling van basketbal oefeningen voor training",
-      exerciseIds: [2, 3, 4, 5],
-      createdAt: "2025-01-20"
-    }
-  ];
+  // No default trainingen
+  return [];
 }
 
 // Save trainingen to localStorage

@@ -1096,6 +1096,16 @@ header p {
   font-style: italic;
 }
 
+/* Form actions (knoppenbalk onder het formulier) */
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 25px;
+  padding: 0 10px;
+  justify-content: flex-start;
+}
+
 /* De 'Oefening toevoegen' knop iets meer presence geven */
 #submit-btn {
   background-color: #0d730d;
@@ -1113,4 +1123,26 @@ header p {
   background-color: #135413;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Match cancel link styling to primary button */
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 28px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+  background-color: #f0f0f0;
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.button-link:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
